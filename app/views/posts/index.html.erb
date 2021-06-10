@@ -1,0 +1,14 @@
+<h1>広大グルメ</h1>
+<%= link_to "新規投稿へ", new_post_path %>
+<h3>一覧</h3>
+<div class="posts-container">
+  <% @posts.each do |t| %>
+    <div class="post">
+      <%= t.title %>
+      <%= t.created_at %>
+      <%= link_to "詳細へ", post_path(t.id) %>
+    </div>
+    <%= link_to "編集する", edit_post_path(t.id) %>
+    <%= button_to "削除する", post_path(t.id), method: :delete %>
+  <% end %>
+</div>

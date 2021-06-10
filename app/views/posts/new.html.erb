@@ -1,0 +1,32 @@
+<h1>広大グルメ</h1>
+<h3>新規投稿</h3>
+<%= form_for @posts do |f| %>
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title, :size => 140 %>
+  </div>
+
+  <div class="field">
+   <%= f.label :about %>
+   <%= f.text_field :about, :size => 140 %>
+  </div>
+
+  <div class="field">
+    <%= f.label :category %>
+    <%= f.select :category, 
+    [["ラーメン", "ラーメン"], 
+    ["和食", "和食"], 
+    ["ファストフード", "ファストフード"],
+    ["中華", "中華"]], include_blank: "選択して下さい" %>
+  </div>
+
+  <div class="field">
+   <%= f.label :url %>
+   <%= f.text_field :url, :size => 140 %>
+  </div>
+
+
+
+  <%= f.submit "投稿する" %>
+<% end %>
+<%= link_to "一覧", posts_path %>
