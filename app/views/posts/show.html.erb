@@ -6,7 +6,30 @@
   <p><%= @post.category %></p>
   <p><%= @post.url %></p>
   <p><%= @post.created_at %></p>
+  
+  <% if user_signed_in? %>
+      <% if current_user.already_liked?(@post) %>
+          <%= link_to post_like_path(@post), method: :delete do %>
+            <i class="fas fa-heart"></i><%= @post.likes.count %>
+            
+          <% end %>
+      <% else %>
+          <%= link_to post_likes_path(@post), method: :post do %>
+            <i class="far fa-heart"></i><%= @post.likes.count %>
+             
+          <% end %>
+      <% end %>
+  <% else %>
+  <i class="far fa-heart"></i><%= @post.likes.count %>
+     
+  <% end %>
 </div>
+
+
+<h2>いいねしたユーザー</h2>
+<% @post.liked_users.each do |user| %>
+  <li><%= user.email %></li>
+<% end %>
 
 <%= link_to "一覧に戻る", posts_path %>
 <%= link_to "編集する", edit_post_path(@post.id) %>
