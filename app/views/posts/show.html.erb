@@ -1,5 +1,6 @@
 <h1>広大グルメ</h1>
 <h3>詳細</h3>
+
 <div class="post">
   <p><%= @post.title %></p>
   <p><%= @post.about %></p>
@@ -15,7 +16,7 @@
           <% end %>
       <% else %>
           <%= link_to post_likes_path(@post), method: :post do %>
-            <i class="far fa-heart"></i><%= @post.likes.count %>
+            <i class="far fa-heart"></i><%= @post.likes.count %> 
              
           <% end %>
       <% end %>
@@ -30,6 +31,27 @@
 <% @post.liked_users.each do |user| %>
   <li><%= user.email %></li>
 <% end %>
+
+<div class="comment-wrapper">
+  <p>コメント一覧</p>
+  <% @comments.each do |c| %>
+    <div>
+      <%= c.user.email unless c.user.blank? %>
+      <br>
+      <%= c.content %>
+    </div>
+      <br>
+  <% end %>
+
+  <% if user_signed_in? %>
+    <%= form_with(model: [@post, @comment], local: true) do |f| %>
+      <%= f.text_area :content %>
+      <%= button_tag type: "submit" do %>
+        <i class="far fa-comments"></i> コメントする
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
 
 <%= link_to "一覧に戻る", posts_path %>
 <%= link_to "編集する", edit_post_path(@post.id) %>
