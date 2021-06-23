@@ -4,7 +4,7 @@
 
 <div class="posts-container">
   <% @posts.each do |t| %>
-    
+    <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
     <div class="post">
       <%= t.title %>
       <%= t.about %>
