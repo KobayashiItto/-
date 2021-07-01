@@ -8,6 +8,10 @@
   <p><%= @post.url %></p>
   <p><%= @post.created_at %></p>
   
+  <% @post.tags.each do |tag| %>
+    <%= tag.name %>
+ <% end %>
+  
   <% if user_signed_in? %>
       <% if current_user.already_liked?(@post) %>
           <%= link_to post_like_path(@post), method: :delete do %>
@@ -26,6 +30,15 @@
   <% end %>
 </div>
 
+<div class="average-score mb-3">
+ <div class="star-rating ml-2">
+   <div class="star-rating-front" style="width: <%= @post.avg_score_percentage %>%">★★★★★</div>
+   <div class="star-rating-back">★★★★★</div>
+ </div>
+ <div class="average-score-display">
+   （<%= @post.avg_score %>点）
+ </div>
+</div>
 
 <h2>いいねしたユーザー</h2>
 <% @post.liked_users.each do |user| %>
@@ -38,20 +51,63 @@
     <div>
       <%= c.user.email unless c.user.blank? %>
       <br>
+      <%= image_tag c.image_url, size: "250x200" if c.image? %>
+      <br>
+  <div>
+    <h2>総合評価：
+     <span class="star-rating">
+     <span class="star-rating-front" style="width: <%= getPercent(c.overall) %>%;">★★★★★</span>
+     <span class="star-rating-back">★★★★★</span>
+     </span> 
+    </h2>
+  </div>
+    <br>
+
+
       <%= c.content %>
     </div>
       <br>
   <% end %>
 
+ 
+
+   
+
+    
+
   <% if user_signed_in? %>
     <%= form_with(model: [@post, @comment], local: true) do |f| %>
       <%= f.text_area :content %>
+        <div class="field">
+          <%= f.label :image %>
+          <%= f.file_field :image %>
+        </div>
       <%= button_tag type: "submit" do %>
         <i class="far fa-comments"></i> コメントする
       <% end %>
+      <h5>総合評価</h5>
+    <div class="post_form">
+    <%= f.radio_button :overall, 5 ,id: 'star1'%>
+    <label for="star1"><span class="text">最高</span>★</label>
+
+    <%= f.radio_button :overall, 4 ,id: 'star2'%>
+    <label for="star2"><span class="text">良い</span>★</label>
+
+    <%= f.radio_button :overall, 3 ,id: 'star3'%>
+    <label for="star3"><span class="text">普通</span>★</label>
+
+    <%= f.radio_button :overall, 2 ,id: 'star4'%>
+    <label for="star4"><span class="text">悪い</span>★</label>
+
+    <%= f.radio_button :overall, 1 ,id: 'star5'%>
+    <label for="star5"><span class="text">最悪</span>★</label>
+ </div>
     <% end %>
   <% end %>
 </div>
 
+     
+     ※評価は1以上で投稿してください
+     <br>
 <%= link_to "一覧に戻る", posts_path %>
 <%= link_to "編集する", edit_post_path(@post.id) %>

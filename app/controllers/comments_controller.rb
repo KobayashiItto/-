@@ -12,11 +12,17 @@ class CommentsController < ApplicationController
       flash[:success] = "コメントできませんでした"
       redirect_back(fallback_location: root_path)
     end
+    @comment = Comment.new(comment_params)
+ 
+     
   end
+
+  
+ 
 
   private
 
     def comment_params
-      params.require(:comment).permit(:content)
+      params.require(:comment).permit(:content, :overall, :image)
     end
 end

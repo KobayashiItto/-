@@ -1,5 +1,55 @@
 <%= form_for @post do |f| %>
     <%= f.label :title %>
     <%= f.text_field :title, :size => 140 %> 
+
+    <div class="field">
+     <%= f.label :about %>
+     <%= f.text_field :about, :size => 140 %>
+    </div>
+
+    <div class="field">
+      <%= f.label :category %>
+      <%= f.select :category, 
+      [["ラーメン", "ラーメン"], 
+      ["和食", "和食"], 
+      ["ファストフード", "ファストフード"],
+      ["中華", "中華"]], include_blank: "選択して下さい" %>
+    </div>
+
+    <div class="field">
+     <%= f.label :url %>
+     <%= f.text_field :url, :size => 140 %>
+    </div>
+
+    <div class="field">
+     <%= f.label :image %>
+     <%= f.file_field :image %>
+    </div>
+
+    <h5>総合評価</h5>
+    <div class="post_form">
+     <%= f.radio_button :overall, 5 ,id: 'star1'%>
+     <label for="star1"><span class="text">最高</span>★</label>
+ 
+     <%= f.radio_button :overall, 4 ,id: 'star2'%>
+     <label for="star2"><span class="text">良い</span>★</label>
+ 
+     <%= f.radio_button :overall, 3 ,id: 'star3'%>
+     <label for="star3"><span class="text">普通</span>★</label>
+ 
+     <%= f.radio_button :overall, 2 ,id: 'star4'%>
+     <label for="star4"><span class="text">悪い</span>★</label>
+ 
+     <%= f.radio_button :overall, 1 ,id: 'star5'%>
+     <label for="star5"><span class="text">最悪</span>★</label>
+  </div>
+ 
+
+    <%= f.text_field :tag_ids,value: @tag_list,\
+     placeholder: "タグをつける。複数つけるには','で区切ってください。" %>
+
+     
     <%= f.submit "編集する" %>
-  <% end %>
+
+<% end %>
+

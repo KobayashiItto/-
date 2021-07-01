@@ -1,15 +1,69 @@
 <h1>広大グルメ</h1>
+<h3>投稿を検索</h3>
+ <%= form_tag({controller:"posts",action:"index"}, method: :get) do %>
+   <%= text_field_tag :search %>
+   <%= submit_tag '検索する'  %>
+<% end %>
+
+<%= form_with url: root_path, method: :get, class: '自由に' do %>
+  <%= select_tag :tag_id,
+    options_from_collection_for_select(Tag.all, :id, :name, params[:tag_id]),
+    {
+      prompt: 'タグで絞り込み',
+      class: '自由に',
+      onchange: 'submit(this.form)'
+    }%>
+<% end %>
+
+
+
+<%li class="search_friend_by_categorize"%>
+ <div class="uk-text-secondary.uk-text-bold">タグで探す</div>
+  <%ul class="uk-flex.uk-flex-wrap"%>
+    <% @tag_lists.each do |list| %>
+      <%li= link_to list.tag_name, posts_path(tag_id: list.id), class: 'tag_list' %>
+    <% end %>
+</li>
+  
+
+
 <%= link_to "新規投稿へ", new_post_path %>
 <h3>一覧</h3>
+<br>
+   <%= page_entries_info @posts, entry_name: "posts" %>
 
 <div class="posts-container">
   <% @posts.each do |t| %>
-    <a href="/users/<%= t.user.id %>"><%= t.user.name %></a>
+   
     <div class="post">
       <%= t.title %>
       <%= t.about %>
       <%= t.category %>
       <%= t.url %>
+      <%= t.user.name %>
+      <%= image_tag t.image_url, size: "250x200" if t.image? %>
+
+      
+    <div>
+     <h2>総合評価：
+      <span class="star-rating">
+      <span class="star-rating-front" style="width: <%= getPercent(t.overall) %>%;">★★★★★</span>
+      <span class="star-rating-back">★★★★★</span>
+      </span> 
+     </h2>
+    </div>
+
+    <% t.tags.each do |tag| %>
+      <%= tag.name %>
+    <% end %>
+
+    <%p class="tag_list_box">
+    <% post.tags.each do |tag| %>
+      <%= link_to "##{tag.tag_name}", _path(tag), class: 'smaller tag_list' %>
+    <% end %>
+    
+      
+   
 
       <% if user_signed_in? %>
       <% if current_user.already_liked?(t) %>
@@ -36,9 +90,17 @@
   <% end %>
 
 
+  
+
+  
+  
+
   <% if user_signed_in? %>
    <%= link_to "マイページへ", user_path(current_user.id) %>　
   <% end %>
 
 
 </div>
+
+
+<%= paginate @posts %>

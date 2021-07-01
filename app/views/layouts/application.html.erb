@@ -6,11 +6,19 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet" href="uikit.min.css">
+    <script src="uikit.min.js"></script>
+
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
+
+  <%= link_to "ログイン", root_path %>
+  <%= link_to "新規登録", new_user_registration_path %>
+  <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
 
   <body>
     <%= yield %>
