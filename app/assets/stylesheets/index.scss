@@ -1,0 +1,55 @@
+.container {    
+    width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: grid;
+    grid-template:
+      "header header header" 500px
+      "main main main" 1fr
+      "footer footer footer" 300px
+    / 1fr 1fr 1fr;
+  }
+  
+  .header { 
+    grid-area: header;
+    background-image:url(first-back.jpg) ;
+    }
+   
+    .f-container{
+        width: 1200px;
+        display:flex;
+        flex-diretion: row;	
+    }
+    .title{
+        width: 400px;
+        display:flex;
+        justify-content: flex-start;
+    }
+
+    .login{
+        width: 400px;
+        display:flex;
+        justify-content: flex-end;
+    }
+   
+  .main {
+    width: 1200px;
+    margin: 0;
+    display: grid;
+    grid-template:
+      "tag tag tag" 
+      "Genre Genre Genre"
+      "toukou toukou toukou" ;
+    grid-area: main;
+  }
+  
+  .tag { grid-area: tag; }
+  
+  .Genre { grid-area: Genre; }
+  
+  .toukou { grid-area: toukou; }
+
+  .footer { 
+      grid-area: footer; 
+    }
+  
