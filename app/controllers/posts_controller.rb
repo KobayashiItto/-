@@ -35,8 +35,8 @@ class PostsController < ApplicationController
     end
 
     def create
-      #post = Post.new(post_params)
-      #post.user_id = current_user.id
+      post = Post.new(post_params)
+      post.user_id = current_user.id
    
     @post = current_user.posts.build(post_params)
     tag_list = params[:post][:tag_ids].split(',')
