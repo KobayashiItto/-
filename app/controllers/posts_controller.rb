@@ -22,28 +22,25 @@ class PostsController < ApplicationController
           posts = Post.all.order(created_at: :desc)
         end
         @tag_lists = Tag.all
-        
-        
-      
-
     end
 
-   
+  
 
     def new
         @posts = Post.new
+        
     end
 
     def create
-      post = Post.new(post_params)
-      post.user_id = current_user.id
-   
+      #post = Post.new(post_params)
+      #post.user_id = current_user.id
+  
     @post = current_user.posts.build(post_params)
     tag_list = params[:post][:tag_ids].split(',')
     if @post.save
-       @post.save_tags(tag_list)
-       flash[:success] = '投稿しました!'
-       redirect_to root_url
+      @post.save_tags(tag_list)
+      flash[:success] = '投稿しました!'
+      redirect_to root_url
     else
       render 'new'
     end
@@ -53,7 +50,7 @@ class PostsController < ApplicationController
     @post.image.attach(params[:post][:image])
     @post.user_id = current_user.id
     if @post.save
-       @post.save_posts(tag_list)
+      @post.save_posts(tag_list)
       redirect_to post_path
     else
       flash.now[:alert] = '投稿に失敗しました'
@@ -78,9 +75,9 @@ class PostsController < ApplicationController
         @post = Post.find(params[:id])
         tag_list = params[:post][:tag_ids].split(',')
         if @post.update(post_params)
-           @post.save_tags(tag_list)
-           flash[:success] = '投稿を編集しました‼'
-           redirect_to @post
+          @post.save_tags(tag_list)
+          flash[:success] = '投稿を編集しました‼'
+          redirect_to @post
         else
         render 'edit'
         end
@@ -91,8 +88,6 @@ class PostsController < ApplicationController
         post.destroy
         redirect_to action: :index
       end
-
-      
 
       private
       def post_params
