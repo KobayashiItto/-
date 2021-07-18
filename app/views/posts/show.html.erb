@@ -1,113 +1,136 @@
-<h1>広大グルメ</h1>
-<h3>詳細</h3>
+<div class="show">
 
-<div class="post">
-  <p><%= @post.title %></p>
-  <p><%= @post.about %></p>
-  <p><%= @post.category %></p>
-  <p><%= @post.url %></p>
-  <p><%= @post.created_at %></p>
-  
-  <% @post.tags.each do |tag| %>
-    <%= tag.name %>
- <% end %>
-  
-  <% if user_signed_in? %>
-      <% if current_user.already_liked?(@post) %>
-          <%= link_to post_like_path(@post), method: :delete do %>
-            <i class="fas fa-heart"></i><%= @post.likes.count %>
-            
+  <div class="hirodaigurume">
+    <h1>広大グルメ</h1>
+    <h3>詳細</h3>
+  </div>
+
+  <div class="main-post">
+    <div class="post">
+        <div class="shopname">
+          <p><%= @post.title %></p>
+        </div>
+        <h5>基本情報</h5>
+          <p><%= @post.about %></p>
+        <h5>カテゴリー</h5>
+          <p><%= @post.category %></p>
+        <h5>URL</h5>
+          <%= Rinku.auto_link(@post.url, :all, 'target="_blank"').html_safe %>
+          <p><%= @post.created_at.strftime("%Y-%m-%d")
+          %></p>
+      
+      <% @post.tags.each do |tag| %>
+        <%= tag.name %>
+      <% end %>
+      
+      <% if user_signed_in? %>
+          <% if current_user.already_liked?(@post) %>
+              <%= link_to post_like_path(@post), method: :delete do %>
+                <i class="fas fa-heart"></i><%= @post.likes.count %>
+                
+              <% end %>
+          <% else %>
+              <%= link_to post_likes_path(@post), method: :post do %>
+                <i class="far fa-heart"></i><%= @post.likes.count %> 
+
+              <% end %>
           <% end %>
       <% else %>
-          <%= link_to post_likes_path(@post), method: :post do %>
-            <i class="far fa-heart"></i><%= @post.likes.count %> 
-             
-          <% end %>
+      <i class="far fa-heart"></i><%= @post.likes.count %>
+      
       <% end %>
-  <% else %>
-  <i class="far fa-heart"></i><%= @post.likes.count %>
-     
-  <% end %>
-</div>
-
-<div class="average-score mb-3">
- <div class="star-rating ml-2">
-   <div class="star-rating-front" style="width: <%= @post.avg_score_percentage %>%">★★★★★</div>
-   <div class="star-rating-back">★★★★★</div>
- </div>
- <div class="average-score-display">
-   （<%= @post.avg_score %>点）
- </div>
-</div>
-
-<h2>いいねしたユーザー</h2>
-<% @post.liked_users.each do |user| %>
-  <li><%= user.email %></li>
-<% end %>
-
-<div class="comment-wrapper">
-  <p>コメント一覧</p>
-  <% @comments.each do |c| %>
-    <div>
-      <%= c.user.email unless c.user.blank? %>
-      <br>
-      <%= image_tag c.image_url, size: "250x200" if c.image? %>
-      <br>
-  <div>
-    <h2>総合評価：
-     <span class="star-rating">
-     <span class="star-rating-front" style="width: <%= getPercent(c.overall) %>%;">★★★★★</span>
-     <span class="star-rating-back">★★★★★</span>
-     </span> 
-    </h2>
-  </div>
-    <br>
-
-
-      <%= c.content %>
     </div>
+
+    <h5>みんなの評価</h5>
+    <div class="average-score mb-3">
+      <div class="star-rating ml-2">
+        <div class="star-rating-front" style="width: <%= @post.avg_score_percentage %>%">★★★★★</div>
+        <div class="star-rating-back">★★★★★</div>
+      </div>
+      <div class="average-score-display">        
+      （<%= @post.avg_score %>点）
+      </div>
+    </div>
+
+    <% @post.liked_users.each do |user| %>
+      <li><%= user.email %></li>
+    <% end %>
+
+    <div class="comment-wrapper">
+      <% @comments.each do |c| %>
       <br>
-  <% end %>
-
- 
-
-   
+      <div class="kutikomi">
+        <h2>総合評価：
+        <span class="star-rating">
+        <span class="star-rating-front" style="width: <%= getPercent(c.overall) %>%;">★★★★★</span>
+        <span class="star-rating-back">★★★★★</span>
+        </span> 
+        </h2>
+        <br>
+          <div class="honbun">
+            <%= c.content %>
+          </div>
+        <br>
+        <%= image_tag c.image_url, size: "250x200" if c.image? %>
+      </div>
+      <% end %>
+    </div>
+  
 
     
 
-  <% if user_signed_in? %>
-    <%= form_with(model: [@post, @comment], local: true) do |f| %>
-      <%= f.text_area :content %>
-        <div class="field">
-          <%= f.label :image %>
-          <%= f.file_field :image %>
+      
+
+    <% if user_signed_in? %>
+      <%= form_with(model: [@post, @comment], local: true) do |f| %>
+        <h2>口コミを投稿する</h2>
+        <h5>・総合評価</h5>
+        <div class="post_form">
+          <%= f.radio_button :overall, 5 ,id: 'star1'%>
+          <label for="star1"><span class="text">最高</span>★</label>
+  
+          <%= f.radio_button :overall, 4 ,id: 'star2'%>
+          <label for="star2"><span class="text">良い</span>★</label>
+  
+          <%= f.radio_button :overall, 3 ,id: 'star3'%>
+          <label for="star3"><span class="text">普通</span>★</label>
+  
+          <%= f.radio_button :overall, 2 ,id: 'star4'%>
+          <label for="star4"><span class="text">悪い</span>★</label>
+  
+          <%= f.radio_button :overall, 1 ,id: 'star5'%>
+          <label for="star5"><span class="text">最悪</span>★</label>
         </div>
-      <%= button_tag type: "submit" do %>
-        <i class="far fa-comments"></i> コメントする
+        ※評価は1以上で投稿してください
+        <br>
+        <h5>・本文</h5>
+        <%= f.text_area :content %>
+        <br>
+        <br>
+          <div class="field">
+            <h5>・画像を添付</h5>
+            <%= f.file_field :image %>
+          </div>
+          <br>
+          <br>
+          <br>
+        <%= button_tag type: "submit" do %>
+          <i class="far fa-comments"></i> 口コミを投稿する
+        <% end %>
       <% end %>
-      <h5>総合評価</h5>
-    <div class="post_form">
-    <%= f.radio_button :overall, 5 ,id: 'star1'%>
-    <label for="star1"><span class="text">最高</span>★</label>
-
-    <%= f.radio_button :overall, 4 ,id: 'star2'%>
-    <label for="star2"><span class="text">良い</span>★</label>
-
-    <%= f.radio_button :overall, 3 ,id: 'star3'%>
-    <label for="star3"><span class="text">普通</span>★</label>
-
-    <%= f.radio_button :overall, 2 ,id: 'star4'%>
-    <label for="star4"><span class="text">悪い</span>★</label>
-
-    <%= f.radio_button :overall, 1 ,id: 'star5'%>
-    <label for="star5"><span class="text">最悪</span>★</label>
- </div>
     <% end %>
-  <% end %>
+    <br>
+      <%= link_to "一覧に戻る", posts_path %>
+      <%= link_to "編集する", edit_post_path(@post.id) %>
+  </div>
+
+
+    <div class="image-post">
+    <h5>ユーザーの画像一覧</h5>
+        <% @comments.each do |c| %>
+          <%= image_tag c.image_url, size: "250x200" if c.image? %>
+          <% end %>
+    </div>
+
 </div>
 
-     
-     ※評価は1以上で投稿してください
-     <br>
-<%= link_to "一覧に戻る", posts_path %>
-<%= link_to "編集する", edit_post_path(@post.id) %>

@@ -3,6 +3,28 @@
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
 
+
+
+
+
+
+h5{
+  border-bottom: double 5px #FFC778;
+  width: 100%;
+  font-size: 20px;
+}
+
+
+.hirodaigurume h1{
+  background-image: linear-gradient(112deg , #fa0, #f28c00);
+
+}
+
+
+
+
+
+
 .lecture_form{
     display: flex;
     flex-direction: column;
@@ -81,7 +103,7 @@
     position: relative;
     width: 5em;
     height: 1em;
-    font-size: 17px;
+    font-size: 30px;
   
   }
   .star-rating-front {
@@ -91,7 +113,7 @@
     overflow: hidden; // 指定幅からはみ出した部分を隠す。
     white-space: nowrap;// widthが足りない時に、折り返さないようにする。
     color: #ffcc33;
-    height: 25px;
+    height: 35px;
   }
   .star-rating-back {
     color: #ccc;

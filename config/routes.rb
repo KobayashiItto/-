@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     resources :comments, only: [:create]
   end
 
-  
+  resources :tags do
+    get 'posts', to: 'posts#search'
+  end
   
 end
 

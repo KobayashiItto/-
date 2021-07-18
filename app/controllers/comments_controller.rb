@@ -26,3 +26,4 @@ class CommentsController < ApplicationController
       params.require(:comment).permit(:content, :overall, :image)
     end
 end
+

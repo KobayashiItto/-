@@ -1,3 +1,4 @@
+
 <h1>広大グルメ</h1>
 <h3>新規投稿</h3>
 
@@ -5,34 +6,49 @@
 
 <%= form_for @posts do |f| %>
   <div class="field">
-    <%= f.label :title %>
-    <%= f.text_field :title, :size => 140 %>
+    <%= f.label :お店の名前 %>
+    <%= f.text_field :title, :size => 50 %>
   </div>
 
   <div class="field">
-  <%= f.label :about %>
-  <%= f.text_field :about, :size => 140 %>
+  <%= f.label :詳細情報 %>
+  <br>
+  <%= f.text_area :about, :size => 200 %>
   </div>
 
 
   
 
   <div class="field">
-    <%= f.label :category %>
+    <%= f.label :ジャンル %>
     <%= f.select :category, 
     [["ラーメン", "ラーメン"], 
     ["和食", "和食"], 
     ["ファストフード", "ファストフード"],
-    ["中華", "中華"]], include_blank: "選択して下さい" %>
+    ["中華", "中華"],
+    ["焼肉", "焼肉"],
+    ["定食", "定食"],
+    ["寿司", "寿司"],
+    ["居酒屋", "居酒屋"],
+    ["お好み焼き", "お好み焼き"],
+    ["うどん", "うどん"],
+    ["インド料理", "インド料理"],
+    ["カフェ", "カフェ"],
+    ["スイーツ", "スイーツ"],
+    ["パン", "パン"],
+    ["イタリアン", "イタリアン"],
+    ], include_blank: "選択して下さい" %>
+
+    
   </div>
 
   <div class="field">
-  <%= f.label :url %>
-  <%= f.text_field :url, :size => 140 %>
+  <%= f.label :URL %>
+  <%= f.text_field :url, :size => 50 %>
   </div>
 
   <div class="field">
-    <%= f.label :image %>
+    <%= f.label :画像 %>
     <%= f.file_field :image %>
   </div>
 
@@ -42,6 +58,8 @@
   </div>
 
   
+</div>
+
 
 
 

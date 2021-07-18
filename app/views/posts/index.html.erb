@@ -1,13 +1,21 @@
+<body>
+
 <div class="container">
   <div class="header">
     <div class="f-container">
       <div class="title">
-        <h1>広大生の広大生による広大生のためのグルメサイト</h1>
+        <h1>広大グルメ</h1>
+        <br>
+        <h3>広大生の広大生による広大生のための西条グルメサイト</h3>
+
       </div>
       <div class="login">
         <%= link_to "ログイン", root_path %>
         <%= link_to "新規登録", new_user_registration_path %>
         <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+        <% if user_signed_in? %>
+        <%= link_to "マイページへ", user_path(current_user.id) %>　
+        <% end %>
       </div>
     
     </div>  
@@ -21,54 +29,51 @@
     　 <%= text_field_tag :search %>
     　 <%= submit_tag '検索する'  %>
   　　<% end %>
-  
-      <%= form_with url: root_path, method: :get, class: '自由に' do %>
-        <%= select_tag :tag_id,
-          options_from_collection_for_select(Tag.all, :id, :name, params[:tag_id]),
-          {
-            prompt: 'タグで絞り込み',
-            class: '自由に',
-            onchange: 'submit(this.form)'
-          }%>
-      <% end %>
-    </div>
-      <div class="Genre">
-      <li> search_friend_by_categorize </li>
-        <div class= "uk-text-secondary.uk-text-bold ">
-        タグで探す
-        <ul> .uk-flex.uk-flex-wrap </ul>
-          - @tag_lists.each do |list|
-        <li> = link_to list.tag_name, items_path(tag_id: list.id), class: 'tag_list' </li>
-      </div>
 
+      
     </div>
+    
+    <div class="タグ横">
+      <% @tag_list.each do |list| %>
+        <div class="tagall">
+        <p><%= link_to list.name, tag_posts_path(tag_id: list.id) %>
+        <%=list.posts.count%></p>
+        </div>
+      <% end %>
+        </div>
+    </div>
+
     <div class="toukou">
     <%= link_to "新規投稿へ", new_post_path %>
     <h3>一覧</h3>
-      <br>
     <%= page_entries_info @posts, entry_name: "posts" %>
 
       <div class="posts-container">
         <% @posts.each do |t| %>
-      <div class="post">
-        <%= t.title %>
-        <%= t.about %>
-        <%= t.category %>
-        <%= t.url %>
-        <%= t.user.name %>
-        <%= image_tag t.image_url, size: "250x200" if t.image? %>  
-      <div>
-        <h2>総合評価：
+        <div class="post">
+          <h2><%= t.title %></h2>
+          <h4>総合評価：
           <span class="star-rating">
           <span class="star-rating-front" style="width: <%= getPercent(t.overall) %>%;">★★★★★</span>
           <span class="star-rating-back">★★★★★</span>
           </span> 
-        </h2>
+          </h4>
+          <%= t.about %>
+          <%= Rinku.auto_link(t.url, :all, 'target="_blank"').html_safe %>
+          <%= image_tag t.image_url, size: "500x400" if t.image? %>  
+        <div>
+        
         </div>
+        
 
-        <% t.tags.each do |tag| %>
-          <%= tag.name %>
-        <% end %>
+        <div class="hello">
+          <% t.tags.each do |tag| %>
+            <%= tag.name %>
+          <% end %>
+        </div>
+        <div class="hello2">
+          <%= t.category %>
+        </div>  
             <% if user_signed_in? %>
             <% if current_user.already_liked?(t) %>
                 <%= link_to post_like_path(id: t.id, post_id: t.id), method: :delete do %>
@@ -86,7 +91,7 @@
                 <p>いいねの数 = </p><%= t.likes.count %>
             <% end %>
 
-            <%= t.created_at %>
+            <%= t.created_at.strftime("%Y-%m-%d")%>
             <%= link_to "詳細へ", post_path(t.id) %>
             <%= link_to "編集する", edit_post_path(t.id) %>
             <%= button_to "削除する", post_path(t.id), method: :delete %>
@@ -94,11 +99,17 @@
         <% end %>
           </div>  
   </div>
-  <div class="footer">
-  <% if user_signed_in? %>
-   <%= link_to "マイページへ", user_path(current_user.id) %>　
-  <% end %>
-  <%= paginate @posts %>
 
-  </div>
+  <%= paginate @posts %>
 </div>
+</body>
+
+
+
+
+
+
+
+
+
+

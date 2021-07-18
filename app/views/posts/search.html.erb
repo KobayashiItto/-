@@ -1,0 +1,69 @@
+<div class="hg">
+    <h1>広大グルメ</h1>
+</div>
+
+<div class="siborikomi">
+    <% @tag_list.each do |list| %>
+        <%= link_to list.name, tag_posts_path(post_tag_id: list.id) %>
+        <%=list.posts.count%>
+    <% end %>
+
+    <br>
+
+    <h3>絞り込みの結果</h3>
+    <strong><% @tag.name %></strong>
+    <br>
+
+    <div class="posts-container">
+    <% @posts.each do |t| %>
+    <div class="post">
+    <h2><%= t.title %></h2>
+    <h4>総合評価：
+    <span class="star-rating">
+    <span class="star-rating-front" style="width: <%= getPercent(t.overall) %>%;">★★★★★</span>
+    <span class="star-rating-back">★★★★★</span>
+    </span> 
+    </h4>
+    <%= t.about %>
+    <%= Rinku.auto_link(t.url, :all, 'target="_blank"').html_safe %>
+    <%= image_tag t.image_url, size: "500x400" if t.image? %>  
+    <div>
+    
+    </div>
+    
+
+    <div class="hello">
+    <% t.tags.each do |tag| %>
+        <%= tag.name %>
+    <% end %>
+    </div>
+    <div class="hello2">
+    <%= t.category %>
+    </div>  
+        <% if user_signed_in? %>
+        <% if current_user.already_liked?(t) %>
+            <%= link_to post_like_path(id: t.id, post_id: t.id), method: :delete do %>
+        <i class="fas fa-heart"></i><%= t.likes.count %>
+                <p>いいねを取り消す</p><%= t.likes.count %>
+            <% end %>
+        <% else %>
+            <%= link_to post_likes_path(id: t.id, post_id: t.id), method: :post do %>
+            <i class="far fa-heart"></i><%= t.likes.count %>
+                <p>いいね</p><%= t.likes.count %>
+            <% end %>
+        <% end %>
+            <% else %>
+            <i class="far fa-heart"></i><%= t.likes.count %>
+            <p>いいねの数 = </p><%= t.likes.count %>
+        <% end %>
+
+        <%= t.created_at.strftime("%Y-%m-%d")%>
+        <%= link_to "詳細へ", post_path(t.id) %>
+        <%= link_to "編集する", edit_post_path(t.id) %>
+        <%= button_to "削除する", post_path(t.id), method: :delete %>
+    </div>
+    <% end %>
+        </div>  
+    <br>
+    <%= link_to 'ホームへ戻る', root_path %>
+</div>
